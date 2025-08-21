@@ -2,6 +2,17 @@
 #include <stdexcept>
 #include "Array.h"
 
+static void shiftRight(int* data, int size, int index) {
+    for (int i = size; i > index; i--) {
+        data[i] = data[i - 1];
+    }
+}
+
+static void shiftLeft(int* data, int size, int index) {
+    for (int i = index; i < size - 1; i++) {
+        data[i] = data[i + 1];
+    }
+}
 // Constructor: allocate array with given capacity
 Array::Array(int capacity) : capacity_(capacity), size_(0) {
     data_ = new int[capacity_];
@@ -24,17 +35,31 @@ bool Array::Add(int value) {
 
 // Insert value at specified index, shifting elements to the right
 bool Array::InsertAt(int index, int value) {
-    return false;
+    if (index < 0 || index > size_) return false;
+    if (size_ == capacity_) return false;
+
+    shiftRight(data_, size_, index);
+    data_[index] = value;
+    size_++;
+    return true;
 }
 
 // Delete element at index, shifting elements left
 bool Array::DeleteAt(int index) {
-    return false;
+    if (index < 0 || index >= size_) return false;
+
+    shiftLeft(data_, size_, index);
+    size_--;
+    return true;
 }
 
 // Update element at index
 bool Array::UpdateAt(int index, int new_value) {
-    return false;
+    if (index < 0 || index >= size_) return false;
+
+    
+    data_[index] = new_value;
+    return true;
 }
 
 // Print all elements
